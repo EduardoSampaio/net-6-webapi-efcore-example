@@ -4,7 +4,9 @@ namespace WebApi.Repository
 {
     public interface IUnitOfWork
     {
-        void Commit();
+        bool SaveAsync();
+        void Dispose();
+
         IFuncionarioRepository FuncionarioRepository { get; }
     }
 }

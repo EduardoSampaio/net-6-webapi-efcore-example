@@ -48,7 +48,7 @@ namespace WebApi.Service
         public void Update(FuncionarioDTO dto)
         {
             //_uow.FuncionarioRepository.Update();
-            _uow.Commit();
+            _uow.SaveAsync();
         }
     }
 }

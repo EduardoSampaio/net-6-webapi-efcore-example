@@ -13,7 +13,6 @@ builder.Services.AddDbContext<MyContext>(x => x.UseMySql(connectionMysql, Server
 
 
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
-builder.Services.AddTransient<IFuncionarioRepository, FuncionarioRepository>();
 builder.Services.AddTransient<IFuncionarioService, FuncionarioService>();
 
 builder.Services.AddControllers();

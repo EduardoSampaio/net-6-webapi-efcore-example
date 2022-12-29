@@ -10,6 +10,6 @@ namespace WebApi.Domain.Entities
         public string Cep { get; set; }
         public string Bairro { get; set; }
         public string Complemento { get; set; }
-        public Funcionario Funcionario { get; set; }
+        public virtual Funcionario Funcionario { get; set; }
     }
 }

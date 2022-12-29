@@ -4,7 +4,6 @@
     {
         public int PermissaoId { get; set; }
         public string Nome { get; set; }
-
-        public ICollection<FuncionarioPermissao> FuncionarioPermissaos { get; set; }
+        public virtual ICollection<FuncionarioPermissao> FuncionarioPermissaos { get; set; }
     }
 }

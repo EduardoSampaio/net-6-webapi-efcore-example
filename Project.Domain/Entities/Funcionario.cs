@@ -1,5 +1,5 @@
 ﻿using Project.Domain.Enums;
-using WebApi.Domain;
+using WebApi.Domain.Entities;
 
 namespace Project.Domain.Entities
 {
@@ -15,14 +15,15 @@ namespace Project.Domain.Entities
         public int Idade { get; set; }
         public bool Ativo { get; set; }
         public Sexo Sexo { get; set; }
-        //public Cargo Cargo { get; set; }
+       
+        public int CargoId { get; set; }
 
-        //public int CargoId { get; set; }
+        public int EnderecoId { get; set; }
 
-        //public int EnderecoId { get; set; }
+        public virtual Cargo Cargo { get; set; }
 
-        //public Endereco Endereco { get; set; }
+        public virtual Endereco Endereco { get; set; }
 
-        //public ICollection<FuncionarioPermissao> FuncionarioPermissaos { get; set; }
+        public virtual ICollection<FuncionarioPermissao> FuncionarioPermissaos { get; set; }
     }
 }

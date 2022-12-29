@@ -1,4 +1,5 @@
-﻿using Project.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore.Storage;
+using Project.Domain.Entities;
 using WebApi.EF;
 
 namespace WebApi.Repository
@@ -7,22 +8,31 @@ namespace WebApi.Repository
     {
         public MyContext _context;
         private IFuncionarioRepository _funcionarioRepository;
-
-        public UnitOfWork(IFuncionarioRepository funcionarioRepository, MyContext context)
+        public UnitOfWork(MyContext context)
         {
-            _funcionarioRepository = funcionarioRepository;
             _context = context;
         }
 
-        public IFuncionarioRepository FuncionarioRepository => _funcionarioRepository;
-
-        public void Commit()
+        public IFuncionarioRepository FuncionarioRepository
         {
-            _context.SaveChanges();
+            get
+            {
+                return _funcionarioRepository ??=  new FuncionarioRepository(_context);
+            }
         }
+
         public void Dispose()
         {
-            _context.Dispose();
+            if (_context != null)
+            {
+                _context.Dispose();
+            }
+            GC.SuppressFinalize(this);
+        }
+
+        public bool SaveAsync()
+        {
+            return _context.SaveChanges() > 0;
         }
     }
 }
