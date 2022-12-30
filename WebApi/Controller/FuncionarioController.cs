@@ -19,14 +19,33 @@ namespace WebApi.Controller
         }
 
         [HttpGet]
-        public IEnumerable<FuncionarioDTO> GetAll() {
+        public IEnumerable<FuncionarioDTO> GetAll()
+        {
             return _funcionarioService.Find();
         }
 
         [HttpGet("{id}")]
-        public int GetById(int id)
+        public FuncionarioDTO GetById(int id)
         {
-            return id;
+            return _funcionarioService.FindById(id);
+        }
+
+        [HttpDelete("{id}")]
+        public void DeleteById(int id)
+        {
+            _funcionarioService.Delete(id);
+        }
+
+        [HttpPut]
+        public void Update(FuncionarioDTO dto)
+        {
+            _funcionarioService.Update(dto);
+        }
+
+        [HttpPost]
+        public void Save(FuncionarioDTO dto)
+        {
+            _funcionarioService.Add(dto);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
@@ -9,15 +10,14 @@ namespace WebApi.Repository
 {
     public class Repository<TEntity, Tkey> : IRepository<TEntity, Tkey> where TEntity : class where Tkey : struct
     {
-        private readonly MyContext _context;
-
+        protected readonly MyContext _context;
         public Repository(MyContext context)
         {
             _context = context;
         }
 
         public void Add(TEntity entity)
-        {
+        {   
             _context.Set<TEntity>().Add(entity);
         }
 
@@ -36,9 +36,9 @@ namespace WebApi.Repository
             return _context.Set<TEntity>().Where(predicate).AsEnumerable();
         }
 
-        public TEntity FindById(Expression<Func<TEntity, bool>> predicate)
+        public TEntity FindById(Tkey id)
         {
-            return _context.Set<TEntity>().SingleOrDefault(predicate);
+            return _context.Set<TEntity>().Find(id);
         }
 
         public void Update(TEntity entity)

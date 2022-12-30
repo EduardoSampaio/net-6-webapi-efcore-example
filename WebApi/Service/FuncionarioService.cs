@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.OpenApi.Extensions;
 using Project.Domain.Entities;
 using System.Linq.Expressions;
 using WebApi.DTO;
@@ -9,7 +8,7 @@ namespace WebApi.Service
 {
     public class FuncionarioService : IFuncionarioService
     {
-        private IUnitOfWork _uow;
+        private readonly IUnitOfWork _uow;
         private IMapper _mapper;
 
         public FuncionarioService(IUnitOfWork uow, IMapper mapper)
@@ -20,35 +19,56 @@ namespace WebApi.Service
 
         public void Add(FuncionarioDTO dto)
         {
-            throw new NotImplementedException();
+            var entity = _mapper.Map<Funcionario>(dto);
+            _uow.FuncionarioRepository.Add(entity);
+            _uow.Complete();
         }
 
-        public void Delete(FuncionarioDTO dto)
+        public void Delete(int id)
         {
-            throw new NotImplementedException();
+            var entity = _uow.FuncionarioRepository.FindById(id);
+
+            if (entity is null) {
+                throw new Exception("Entidade Não Encontrada");
+            }
+            _uow.FuncionarioRepository.Delete(entity);
+            _uow.Complete();
         }
 
         public IEnumerable<FuncionarioDTO> Find()
         {
-            IEnumerable<Funcionario> funcionarios = _uow.FuncionarioRepository.Find();
+            var funcionarios = _uow.FuncionarioRepository.Find();
             return funcionarios.Select(funcionario => _mapper.Map<FuncionarioDTO>(funcionario));
-
         }
 
         public IEnumerable<FuncionarioDTO> Find(Expression<Func<Funcionario, bool>> predicate)
         {
-            throw new NotImplementedException();
+            var funcionarios = _uow.FuncionarioRepository.Find(predicate);
+            return funcionarios.Select(funcionario => _mapper.Map<FuncionarioDTO>(funcionario));
         }
 
-        public FuncionarioDTO FindById(Expression<Func<FuncionarioDTO, bool>> predicate)
+        public FuncionarioDTO FindById(int id)
         {
-            throw new NotImplementedException();
+           var entity = _uow.FuncionarioRepository.FindById(id);
+           return _mapper.Map<FuncionarioDTO>(entity);
         }
 
         public void Update(FuncionarioDTO dto)
         {
-            //_uow.FuncionarioRepository.Update();
-            _uow.SaveAsync();
+            var entity = _uow.FuncionarioRepository.FindById(dto.FuncionarioId);
+
+            if (entity is null)
+            {
+                throw new Exception("Entidade Não Encontrada");
+            }
+
+            entity.Nome = dto.Nome;
+            entity.Salario = dto.Salario;
+            entity.Idade = dto.Idade;
+            entity.Matricula = dto.Matricula;
+            
+            _uow.FuncionarioRepository.Update(entity);
+            _uow.Complete();
         }
     }
 }

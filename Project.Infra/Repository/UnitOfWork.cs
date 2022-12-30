@@ -1,39 +1,26 @@
-﻿using Microsoft.EntityFrameworkCore.Storage;
-using Project.Domain.Entities;
+﻿using Microsoft.Extensions.Logging;
 using WebApi.EF;
 
 namespace WebApi.Repository
 {
-    public class UnitOfWork : IUnitOfWork, IDisposable
+    public class UnitOfWork : IUnitOfWork
     {
         public MyContext _context;
+
         private IFuncionarioRepository _funcionarioRepository;
+
         public UnitOfWork(MyContext context)
         {
             _context = context;
         }
 
-        public IFuncionarioRepository FuncionarioRepository
-        {
-            get
-            {
-                return _funcionarioRepository ??=  new FuncionarioRepository(_context);
-            }
-        }
+        public IFuncionarioRepository FuncionarioRepository => _funcionarioRepository ??= new FuncionarioRepository(_context);
 
-        public void Dispose()
-        {
-            if (_context != null)
-            {
-                _context.Dispose();
-            }
-            GC.SuppressFinalize(this);
-        }
-
-        public bool SaveAsync()
+        public bool Complete()
         {
             return _context.SaveChanges() > 0;
         }
+
     }
 }
 
