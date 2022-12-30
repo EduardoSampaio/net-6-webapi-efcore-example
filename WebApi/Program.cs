@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Project.Infra.RepositoryAsync;
 using WebApi.EF;
 using WebApi.Repository;
 using WebApi.Service;
@@ -15,6 +16,7 @@ builder.Services.AddDbContext<MyContext>(x => x.UseMySql(connectionMysql, Server
 
 
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
+builder.Services.AddTransient<IUnitOfWorkAsync, UnitOfWorkAsync>();
 builder.Services.AddTransient<IFuncionarioService, FuncionarioService>();
 
 builder.Services.AddControllers();

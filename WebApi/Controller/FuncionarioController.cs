@@ -19,13 +19,13 @@ namespace WebApi.Controller
         }
 
         [HttpGet]
-        public IEnumerable<FuncionarioDTO> GetAll()
+        public Task<IEnumerable<FuncionarioDTO>> GetAll()
         {
             return _funcionarioService.Find();
         }
 
         [HttpGet("{id}")]
-        public FuncionarioDTO GetById(int id)
+        public Task<FuncionarioDTO> GetById(int id)
         {
             return _funcionarioService.FindById(id);
         }
