@@ -9,8 +9,8 @@ namespace WebApi.Service
         Task<FuncionarioDTO> FindById(int id);
         Task<IEnumerable<FuncionarioDTO>> Find();
         Task<IEnumerable<FuncionarioDTO>> Find(Expression<Func<Funcionario, bool>> predicate);
-        void Add(FuncionarioDTO dto);
-        void Delete(int id);
+        Task AddAsync(FuncionarioDTO dto);
+        Task Delete(int id);
         void Update(FuncionarioDTO dto);
     }
 }

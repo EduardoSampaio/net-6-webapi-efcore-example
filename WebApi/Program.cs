@@ -1,7 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json.Serialization;
 using Project.Infra.RepositoryAsync;
 using WebApi.EF;
+using WebApi.Middleware;
 using WebApi.Repository;
 using WebApi.Service;
 
@@ -19,7 +21,14 @@ builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 builder.Services.AddTransient<IUnitOfWorkAsync, UnitOfWorkAsync>();
 builder.Services.AddTransient<IFuncionarioService, FuncionarioService>();
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(options => options.RespectBrowserAcceptHeader = true)
+    .AddJsonOptions(jsonOpt => jsonOpt.JsonSerializerOptions.PropertyNamingPolicy = null)
+    .AddNewtonsoftJson(options =>
+    {
+        options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+    });
+
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
@@ -28,6 +37,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+app.UseMiddleware<GlobalErrorHandling>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 using WebApi.DTO;
 using WebApi.Repository;
 using WebApi.Service;
@@ -19,33 +20,39 @@ namespace WebApi.Controller
         }
 
         [HttpGet]
-        public Task<IEnumerable<FuncionarioDTO>> GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            return _funcionarioService.Find();
+            var resultado = await _funcionarioService.Find();
+            return Ok(resultado);
         }
 
         [HttpGet("{id}")]
-        public Task<FuncionarioDTO> GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            return _funcionarioService.FindById(id);
+            var resultado = await _funcionarioService.FindById(id);
+            return Ok(resultado);
         }
 
         [HttpDelete("{id}")]
-        public void DeleteById(int id)
+        public async Task<IActionResult> DeleteById(int id)
         {
-            _funcionarioService.Delete(id);
+            await _funcionarioService.Delete(id);
+            return Ok();
         }
 
         [HttpPut]
-        public void Update(FuncionarioDTO dto)
+        public IActionResult Update(FuncionarioDTO dto)
         {
             _funcionarioService.Update(dto);
+            return Ok();
         }
 
         [HttpPost]
-        public void Save(FuncionarioDTO dto)
+        public async Task<IActionResult> Save(FuncionarioDTO dto)
         {
-            _funcionarioService.Add(dto);
+            await _funcionarioService.AddAsync(dto);
+            var location = Url.Action(nameof(GetById), new { id = dto.FuncionarioId }) ?? $"/{dto.FuncionarioId}";
+            return Created(location, dto);
         }
     }
 }
