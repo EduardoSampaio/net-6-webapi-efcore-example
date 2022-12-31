@@ -57,7 +57,7 @@ namespace WebApi.Service
             return _mapper.Map<FuncionarioDTO>(entity);
         }
 
-        public void Update(FuncionarioDTO dto)
+        public async Task Update(FuncionarioDTO dto)
         {
 
             var entity = _uow.FuncionarioRepository.GetById(dto.FuncionarioId);
@@ -71,8 +71,8 @@ namespace WebApi.Service
             entity.Salario = dto.Salario;
             entity.Idade = dto.Idade;
             entity.Matricula = dto.Matricula;
-            _uow.FuncionarioRepository.Update(entity);
-            _uow.Complete();
+            await _uow.FuncionarioRepository.Update(entity);
+            await _uow.CompleteAsync();
         }
 
     }

@@ -11,6 +11,6 @@ namespace WebApi.Service
         Task<IEnumerable<FuncionarioDTO>> Find(Expression<Func<Funcionario, bool>> predicate);
         Task AddAsync(FuncionarioDTO dto);
         Task Delete(int id);
-        void Update(FuncionarioDTO dto);
+        Task Update(FuncionarioDTO dto);
     }
 }

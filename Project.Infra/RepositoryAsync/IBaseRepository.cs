@@ -5,7 +5,7 @@ namespace Project.Infra.RepositoryAsync
     public interface IBaseRepository<T> where T : class
     {
         Task<T> AddAsync(T entity);
-        void Update(T entity);
+        Task Update(T entity);
         Task DeleteAsync(T entity);
         Task DeleteManyAsync(Expression<Func<T, bool>> filter);
         Task<IEnumerable<T>> GetAllAsync();

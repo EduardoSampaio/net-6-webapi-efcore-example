@@ -41,9 +41,9 @@ namespace WebApi.Controller
         }
 
         [HttpPut]
-        public IActionResult Update(FuncionarioDTO dto)
+        public async Task<IActionResult> Update(FuncionarioDTO dto)
         {
-            _funcionarioService.Update(dto);
+            await _funcionarioService.Update(dto);
             return Ok();
         }
 

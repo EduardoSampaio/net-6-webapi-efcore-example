@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,7 +57,8 @@ namespace Project.Infra.RepositoryAsync
         /// <returns><see cref="Task"/></returns>
         public Task DeleteAsync(T entity)
         {
-            _dbSet.Remove(entity);
+            EntityEntry entityEntry = _dbContext.Entry(entity);
+            entityEntry.State = EntityState.Deleted;
             return Task.CompletedTask;
         }
 
@@ -149,10 +151,11 @@ namespace Project.Infra.RepositoryAsync
             return await query.ToListAsync();
         }
 
-        public void Update(T entity)
+        public Task Update(T entity)
         {
-            _dbContext.Entry(entity).State = EntityState.Modified;
-            _dbSet.Update(entity);
+            EntityEntry entityEntry = _dbContext.Entry(entity);
+            entityEntry.State = EntityState.Modified;
+            return Task.CompletedTask;
         }
 
         #endregion
